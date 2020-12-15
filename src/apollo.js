@@ -1,7 +1,12 @@
 import ApolloClient from "apollo-boost";
 
 const client = new ApolloClient({
-  uri: "https://nomadcoders.co/graphql-for-beginners/lobby",
+  uri: "http://localhost:4000/",
+  resolvers: {
+    Movie: {
+      isLiked: () => false,
+    },
+  },
 });
 
 export default client;
