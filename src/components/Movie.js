@@ -2,6 +2,13 @@ import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
+const LIKE_MOVIE = gql`
+  mutation likeMovie($id: Int!) {
+    mutation
+    likeMovie(id: $id) @client
+  }
+`;
+
 const Container = styled.div`
   height: 380px;
   width: 100%;
@@ -18,11 +25,18 @@ const Poster = styled.div`
   background-position: center center;
 `;
 
-export default ({ id, bg, isLiked }) => (
-  <Container>
-    <Link to={`/${id}`}>
-      <Poster bg={bg} />
-    </Link>
-    <button>{isLiked ? "Unlikde" : "Like"}</button>
-  </Container>
-);
+export default ({ id, bg, isLiked }) => {
+  const [likeMovie] = useMutation(LIKE_MOVIE, {
+    variables: { id: parseInt(id) },
+  });
+  return (
+    <Container>
+      <Link to={`/${id}`}>
+        <Poster bg={bg} />
+      </Link>
+      <button onClick={isLiked ? null : likeMovie}>
+        {isLiked ? "Unlikde" : "Like"}
+      </button>
+    </Container>
+  );
+};
